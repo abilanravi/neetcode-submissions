@@ -6,19 +6,16 @@
 #         self.right = right
 
 class Solution:
-    def isValidBST(self, root: Optional[TreeNode]) -> bool:
-        if not root:
-            return True
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        stack = []
+        curr = root
 
-        q = deque([(root, float("-inf"), float("inf"))])
-
-        while q:
-            node, left, right = q.popleft()
-            if not (left < node.val < right):
-                return False
-            if node.left:
-                q.append((node.left, left, node.val))
-            if node.right:
-                q.append((node.right, node.val, right))
-
-        return True
+        while stack or curr:
+            while curr:
+                stack.append(curr)
+                curr = curr.left
+            curr = stack.pop()
+            k -= 1
+            if k == 0:
+                return curr.val
+            curr = curr.right
